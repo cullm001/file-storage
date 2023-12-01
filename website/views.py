@@ -10,6 +10,7 @@ from operator import attrgetter
 from botocore.exceptions import NoCredentialsError
 
 views = Blueprint('views',__name__)
+Bucket_Name = "bucket name"
 
 def calc_file_size(num_bytes):
     suffixes = ['B', 'KB', 'MB', 'GB', 'TB']
@@ -29,7 +30,7 @@ def size_validity(filesize):
     
     total_size = 0
     s3 = boto3.client('s3')
-    objects = s3.list_objects_v2(Bucket='flaskfilestorage')['Contents']
+    objects = s3.list_objects_v2(Bucket='Bucket_Name')['Contents']
     for obj in objects:
         total_size += obj['Size']
 
@@ -96,7 +97,7 @@ def upload():
 
                 s3 = boto3.client('s3')
                 s3_key = f"{current_user.id}/{filename}"
-                s3.upload_fileobj(uploaded_file, 'flaskfilestorage', s3_key)
+                s3.upload_fileobj(uploaded_file, 'Bucket_Name', s3_key)
            
     order_by = request.args.get('order_by', 'date_desc')
     files = File.query.filter_by(user_id=current_user.id).all()
@@ -118,7 +119,7 @@ def download(file_id):
         try:
             temp_file_path = '/tmp/temporary_download_file'
             with open(temp_file_path, 'wb') as temp_file:
-                s3.download_file('flaskfilestorage', s3_key, temp_file_path)
+                s3.download_file('Bucket_Name', s3_key, temp_file_path)
             return send_file(temp_file_path, as_attachment=True, download_name=file.file_name)
         
         except Exception as e:
@@ -142,7 +143,7 @@ def delete(file_id):
         try:
             s3 = boto3.client('s3')
             s3_key = f"{current_user.id}/{file.file_name}"
-            s3.delete_object(Bucket = "flaskfilestorage", Key = s3_key)
+            s3.delete_object(Bucket = "Bucket_Name", Key = s3_key)
 
             db.session.delete(file)
             db.session.commit()
@@ -173,8 +174,8 @@ def rename(file_id):
         s3 = boto3.client('s3')
         s3_key = f"{current_user.id}/{file.file_name}"
         
-        s3.copy_object(Bucket="flaskfilestorage", CopySource=f"flaskfilestorage/{s3_key}",Key=f"{current_user.id}/{new_name}")
-        s3.delete_object(Bucket="flaskfilestorage",Key=s3_key)
+        s3.copy_object(Bucket="Bucket_Name", CopySource=f"Bucket_Name/{s3_key}",Key=f"{current_user.id}/{new_name}")
+        s3.delete_object(Bucket="Bucket_Name",Key=s3_key)
 
         file.file_name = new_name
         db.session.commit()
