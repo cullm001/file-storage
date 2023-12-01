@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="jumbotron p-3">
+    <div class="container-fluid">
+        <div class="well text-center">
+            <h1>Cloud Storage</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="jumbotron p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2> Current Files </h2>
+                    <div class="d-flex align-items-center">
+                        <form action="{{ url_for('views.upload') }}" method="POST" enctype="multipart/form-data" class="mr-3">
+                            <label for="fileInput" class="btn btn-success">
+                                <input type="file" id="fileInput" name="file" style="display: none;" onchange="this.form.submit()" />
+                                Choose File for Upload
+                            </label>
+                        </form>
+
+                        <form id="orderForm" method="get" action="{{ url_for('views.home') }}">
+                            <select name="order_by" id="order_by" class="form-control" onchange="submitForm()">
+                                <option value="alphabetical" {% if order_by == 'alphabetical' %}selected{% endif %}>Alphabetical</option>
+                                <option value="date_asc" {% if order_by == 'date_asc' %}selected{% endif %}>Date (Asc)</option>
+                                <option value="date_desc" {% if order_by == 'date_desc' %}selected{% endif %}>Date (Desc)</option>
+                                <option value="size_asc" {% if order_by == 'size_asc' %}selected{% endif %}>Size (Asc)</option>
+                                <option value="size_desc" {% if order_by == 'size_desc' %}selected{% endif %}>Size (Desc)</option>
+                            </select>
+                        </form>
+                        
+                    </div>
+                </div>
+
+                <table class="table table-hover table-dark">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Size</th>
+                            <th>Upload Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in files %}
+                        <tr>
+                            <td>{{ file.file_name }}</td>
+                            <td>{{ file.file_size_display}}</td>
+                            <td>{{ file.date }}</td>
+                            <td>
+                                <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{ file.id}}">
+                                    Rename
+                                </button>
+
+                                <a href="{{ url_for('views.download', file_id=file.id, order_by=order_by) }}" class="btn btn-success btn-xs">
+                                    Download
+                                </a>
+                                
+                                
+
+                                <form method="post" action="{{ url_for('views.delete', file_id=file.id, order_by=order_by) }}" style="display: inline;">
+                                    <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        
+                        <div id="modaledit{{ file.id }}" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Rename File</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" action="{{ url_for('views.rename', file_id=file.id, order_by=order_by) }}">
+                                            <div class="form-group">
+                                                <label for="newName">Enter New Name:</label>
+                                                <input type="text" class="form-control" name="newName" required="1">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Rename</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function submitForm() {
+        document.getElementById('orderForm').submit();
+    }
+</script>
+
+{% endblock %}
