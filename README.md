@@ -26,7 +26,11 @@ This is a full stack file storage web application. It features user authenticati
 - Bucket_Name (Name of AWS S3 bucket)
 - individual_limit (Size limit of individual file)
 - total_limit (Size limit of total bucket)
-4. Run the application
+4. Install the AWS CLI and enter AWS credentials using
+```bash
+  aws configure
+```
+5. Run the application
   ```bash
   python main.py
 ```
