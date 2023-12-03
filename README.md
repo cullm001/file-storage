@@ -31,7 +31,7 @@ This is a full stack file storage web application. It features user authenticati
   aws configure
 ```
 5. Run the application
-  ```bash
+```bash
   python main.py
 ```
 ## How to use
