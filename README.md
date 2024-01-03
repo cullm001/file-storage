@@ -1,13 +1,14 @@
 # Cloud-Based File Storage
 
 ## Overview
-This is a full stack file storage web application. It features user authentication and authorization and multiple AWS service integrations. The goal of this project was to design a system to allow users to manage and store files in the cloud.
+This is a full stack file storage web application. It features user authentication and authorization and multiple AWS service integrations. The goal of this project was to design a system to allow users to manage and store files in the cloud. The web app is deployed at [https://cloudfilestorage.pythonanywhere.com](https://cloudfilestorage.pythonanywhere.com/).
 
 ## Built With
 - **Backend:** Python, Flask
 - **Frontend:** HTML, Bootstrap
 - **Database:** MySQL, AWS RDS
 - **Cloud Storage:** AWS S3
+- **Deployment:** [https://www.pythonanywhere.com](https://www.pythonanywhere.com)
 
 ## How to Install
 1. Clone the repository
@@ -26,7 +27,7 @@ This is a full stack file storage web application. It features user authenticati
 - Bucket_Name (Name of AWS S3 bucket)
 - individual_limit (Size limit of individual file)
 - total_limit (Size limit of total bucket)
-4. Install the AWS CLI and enter AWS credentials using
+4. Install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and enter AWS credentials using
 ```bash
   aws configure
 ```
