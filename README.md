@@ -7,7 +7,7 @@ This is a full stack file storage web application. It features user authenticati
 - **Backend:** Python, Flask
 - **Frontend:** HTML, Bootstrap
 - **Database:** MySQL, AWS RDS
-- **Cloud Storage:** AWS S3
+- **File Storage:** AWS S3
 - **Deployment:** [https://www.pythonanywhere.com](https://www.pythonanywhere.com)
 
 ## How to Install
